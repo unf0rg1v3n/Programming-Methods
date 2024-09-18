@@ -12,6 +12,7 @@ namespace Programming_Methods
         {
             int size = arr.Length;
             T[] result = new T[size];
+            arr.CopyTo(result, 0);
 
             for (int j = 0; j < size - 1; j++)
             {
@@ -28,23 +29,55 @@ namespace Programming_Methods
             return result;
         }
 
-        public static T[] QuickSort<T>(in T[] arr) where T : IComparable
+        public static T[] QuickSort<T>(T[] array) where T : IComparable<T>
         {
-            if (arr.Length <= 1) return arr;
-
-            T pivot = arr[arr.Length / 2];
-            T[] less = arr.Where(x => x.CompareTo(pivot) < 0).ToArray();
-            T[] greater = arr.Where(x => x.CompareTo(pivot) > 0).ToArray();
-
-            return QuickSort(less).Concat(new[] { pivot }).Concat(QuickSort(greater)).ToArray();
+            T[] sortedArray = (T[])array.Clone();
+            QuickSortArray(sortedArray, 0, sortedArray.Length - 1);
+            return sortedArray;
         }
 
-        public static T[] MergeSort<T>(T[] array) where T : IComparable<T>
+        private static void QuickSortArray<T>(T[] array, int left, int right) where T : IComparable<T>
+        {
+            if (left < right)
+            {
+                int pivotIndex = Partition(array, left, right);
+
+                QuickSortArray(array, left, pivotIndex - 1);
+                QuickSortArray(array, pivotIndex + 1, right);
+            }
+        }
+
+        private static int Partition<T>(T[] array, int left, int right) where T : IComparable<T>
+        {
+            T pivot = array[right];
+            int i = left;
+
+            for (int j = left; j < right; j++)
+            {
+                if (array[j].CompareTo(pivot) <= 0)
+                {
+                    Swap(array, i, j);
+                    i++;
+                }
+            }
+            Swap(array, i, right);
+
+            return i;
+        }
+
+        private static void Swap<T>(T[] array, int i, int j)
+        {
+            T temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+    
+
+    public static T[] MergeSort<T>(T[] array) where T : IComparable<T>
         {
             if (array.Length <= 1)
                 return array;
 
-            // Разбиение массива на две части
             int middle = array.Length / 2;
             T[] left = new T[middle];
             T[] right = new T[array.Length - middle];
@@ -52,11 +85,10 @@ namespace Programming_Methods
             Array.Copy(array, 0, left, 0, middle);
             Array.Copy(array, middle, right, 0, array.Length - middle);
 
-            // Рекурсивная сортировка каждой части
             left = MergeSort(left);
             right = MergeSort(right);
 
-            // Слияние отсортированных частей
+
             return Merge(left, right);
         }
 
