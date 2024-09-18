@@ -50,19 +50,19 @@ namespace Programming_Methods
         private static int Partition<T>(T[] array, int left, int right) where T : IComparable<T>
         {
             T pivot = array[right];
-            int i = left;
+            int wall = left;
 
             for (int j = left; j < right; j++)
             {
                 if (array[j].CompareTo(pivot) <= 0)
                 {
-                    Swap(array, i, j);
-                    i++;
+                    Swap(array, wall, j);
+                    wall++;
                 }
             }
-            Swap(array, i, right);
+            Swap(array, wall, right);
 
-            return i;
+            return wall;
         }
 
         private static void Swap<T>(T[] array, int i, int j)
