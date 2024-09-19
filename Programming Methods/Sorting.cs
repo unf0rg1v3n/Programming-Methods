@@ -92,13 +92,13 @@ namespace Programming_Methods
             return Merge(left, right);
         }
 
-        // Функция для слияния двух отсортированных массивов
+        
         private static T[] Merge<T>(T[] left, T[] right) where T : IComparable<T>
         {
             T[] result = new T[left.Length + right.Length];
             int i = 0, j = 0, k = 0;
 
-            // Слияние до тех пор, пока есть элементы в обоих массивах
+            
             while (i < left.Length && j < right.Length)
             {
                 if (left[i].CompareTo(right[j]) <= 0)
@@ -111,13 +111,13 @@ namespace Programming_Methods
                 }
             }
 
-            // Копирование оставшихся элементов из левого массива
+            
             while (i < left.Length)
             {
                 result[k++] = left[i++];
             }
 
-            // Копирование оставшихся элементов из правого массива
+       
             while (j < right.Length)
             {
                 result[k++] = right[j++];
